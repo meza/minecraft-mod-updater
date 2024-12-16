@@ -387,4 +387,92 @@ describe('The Scan action', () => {
       }
     });
   });
+
+  it<LocalTestContext>('handles errors gracefully and continues scanning other mods', async ({ options, logger }) => {
+    const name1 = chance.word();
+    const name2 = chance.word();
+    const randomResult1 = generateScanResult({ name: name1 }).generated;
+    const randomResult2 = generateScanResult({ name: name2 }).generated;
+
+    vi.mocked(scanLib).mockResolvedValueOnce([randomResult1, randomResult2]);
+    vi.mocked(shouldAddScanResults).mockResolvedValueOnce(false);
+
+    await scan(options, logger);
+
+    const logMessages = vi.mocked(logger.log).mock.calls;
+
+    expect(logMessages[0][0]).toContain(name1);
+    expect(logMessages[0][0]).toContain('Found unmanaged mod: ');
+    expect(logMessages[1][0]).toContain(name2);
+    expect(logMessages[1][0]).toContain('Found unmanaged mod: ');
+  });
+
+  it<LocalTestContext>('updates the configuration and lock files correctly for all found mods', async (context) => {
+    const preexistingMod = generateModConfig().generated;
+    const preexistingInstall = generateModInstall({
+      type: preexistingMod.type,
+      id: preexistingMod.id,
+      name: preexistingMod.name
+    }).generated;
+
+    context.randomConfiguration.mods.push(preexistingMod);
+    context.randomInstallations.push(preexistingInstall);
+
+    const details1 = randomModDetails();
+    const randomResult1 = generateScanResult(details1).generated;
+    const details2 = randomModDetails();
+    const randomResult2 = generateScanResult(details2).generated;
+
+    vi.mocked(scanLib).mockResolvedValueOnce([randomResult1, randomResult2]);
+    vi.mocked(shouldAddScanResults).mockResolvedValueOnce(true);
+
+    await scan(context.options, context.logger);
+
+    expect(vi.mocked(writeConfigFile)).toHaveBeenCalledOnce();
+    expect(vi.mocked(writeLockFile)).toHaveBeenCalledOnce();
+
+    const writtenConfig = vi.mocked(writeConfigFile).mock.calls[0][0];
+    const writtenLock = vi.mocked(writeLockFile).mock.calls[0][0];
+
+    expect(writtenConfig.mods).toContainEqual(preexistingMod);
+    expect(writtenConfig.mods).toContainEqual({
+      name: details1.name,
+      id: details1.modId,
+      type: details1.platform
+    });
+    expect(writtenConfig.mods).toContainEqual({
+      name: details2.name,
+      id: details2.modId,
+      type: details2.platform
+    });
+
+    expect(writtenLock).toContainEqual(preexistingInstall);
+    expect(writtenLock).toContainEqual({
+      downloadUrl: randomResult1.localDetails[0].mod.downloadUrl,
+      fileName: randomResult1.localDetails[0].mod.fileName,
+      hash: randomResult1.localDetails[0].mod.hash,
+      id: details1.modId,
+      name: details1.name,
+      releasedOn: randomResult1.localDetails[0].mod.releaseDate,
+      type: details1.platform
+    });
+    expect(writtenLock).toContainEqual({
+      downloadUrl: randomResult2.localDetails[0].mod.downloadUrl,
+      fileName: randomResult2.localDetails[0].mod.fileName,
+      hash: randomResult2.localDetails[0].mod.hash,
+      id: details2.modId,
+      name: details2.name,
+      releasedOn: randomResult2.localDetails[0].mod.releaseDate,
+      type: details2.platform
+    });
+  });
+
+  it<LocalTestContext>('logs detailed error messages for debugging purposes', async ({ options, logger }) => {
+    const error = new Error('Test error');
+    vi.mocked(scanLib).mockRejectedValueOnce(error);
+
+    await expect(scan(options, logger)).rejects.toThrow('process.exit');
+
+    expect(logger.error).toHaveBeenCalledWith(error.message, 2);
+  });
 });

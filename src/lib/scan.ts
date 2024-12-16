@@ -76,8 +76,10 @@ export const scanFiles = async (
       } catch (error) {
         if (!(error instanceof CurseforgeDownloadUrlError || error instanceof NoRemoteFileFound)) {
           // Edge case for a freak Curseforge bug and the no remote file
-          throw error;
+          console.error(`Error fetching mod details for ${lookupResult.hits[i].modId} on ${lookupResult.hits[i].platform}: ${error.message}`);
+          continue; // Skip problematic mods
         }
+        console.error(`Error fetching mod details for ${lookupResult.hits[i].modId} on ${lookupResult.hits[i].platform}: ${error.message}`);
       }
     }
 
@@ -102,6 +104,7 @@ export const scanFiles = async (
   const result: ScanResults[] = [];
   normalizedResults.forEach((normalizeResult) => {
     if (normalizeResult.status === 'rejected') {
+      console.error(`Error normalizing results: ${normalizeResult.reason}`);
       return;
     }
 

@@ -13,7 +13,7 @@ import { fileIsManaged } from './configurationHelper.js';
 import { getModFiles } from './fileHelper.js';
 import { getHash } from './hash.js';
 import { ModInstall, ModsJson, Platform } from './modlist.types.js';
-import { scan } from './scan.js';
+import { scan, scanFiles } from './scan.js';
 
 vi.mock('./fileHelper.js');
 vi.mock('./hash.js');
@@ -327,6 +327,48 @@ describe('The scan library', () => {
 
         expect(actual).toEqual([]);
       });
+    });
+  });
+
+  describe('scanFiles function', () => {
+    it('handles errors gracefully and skips problematic mods', async () => {
+      const files = [chance.word()];
+      const installations: ModInstall[] = [];
+      const prefer = Platform.MODRINTH;
+      const configuration = generateModsJson().generated;
+
+      vi.mocked(getHash).mockRejectedValueOnce(new Error('Test error'));
+
+      const result = await scanFiles(files, installations, prefer, configuration);
+
+      expect(result).toEqual([]);
+    });
+
+    it('logs detailed error messages for debugging purposes', async () => {
+      const files = [chance.word()];
+      const installations: ModInstall[] = [];
+      const prefer = Platform.MODRINTH;
+      const configuration = generateModsJson().generated;
+
+      const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+
+      vi.mocked(getHash).mockRejectedValueOnce(new Error('Test error'));
+
+      await scanFiles(files, installations, prefer, configuration);
+
+      expect(consoleErrorSpy).toHaveBeenCalledWith(expect.stringContaining('Error fetching mod details'));
+      consoleErrorSpy.mockRestore();
+    });
+
+    it('returns an empty array when there are no files in the mods folder or all files are managed', async () => {
+      const files: string[] = [];
+      const installations: ModInstall[] = [];
+      const prefer = Platform.MODRINTH;
+      const configuration = generateModsJson().generated;
+
+      const result = await scanFiles(files, installations, prefer, configuration);
+
+      expect(result).toEqual([]);
     });
   });
 });
