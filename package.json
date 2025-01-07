@@ -47,7 +47,7 @@
     "glob": "11.0.0",
     "hwid": "0.5.0",
     "inquirer": "10.2.2",
-    "log-symbols": "6.0.0",
+    "log-symbols": "7.0.0",
     "minimatch": "10.0.1",
     "nodejs-file-downloader": "4.13.0",
     "posthog-node": "4.2.1",
