@@ -58,8 +58,8 @@ importers:
         specifier: 19.6.0
         version: 19.6.0
       '@commitlint/prompt-cli':
-        specifier: 19.6.1
-        version: 19.6.1(@types/node@22.10.5)(typescript@5.7.2)
+        specifier: 19.7.0
+        version: 19.7.0(@types/node@22.10.5)(typescript@5.7.2)
       '@faker-js/faker':
         specifier: 9.3.0
         version: 9.3.0
@@ -327,8 +327,8 @@ packages:
     resolution: {integrity: sha512-cZ/IxfAlfWYhAQV0TwcbdR1Oc0/r0Ik1GEessDJ3Lbuma/MRO8FRQX76eurcXtmhJC//rj52ZSZuXUg0oIX0Fw==}
     engines: {node: '>=v18'}
 
-  '@commitlint/prompt-cli@19.6.1':
-    resolution: {integrity: sha512-CctENTw2sHGBbpLVKk9LpJ3WFwSzVBHxNN6hw7Mw8yDtfibS2mbx0HT0gDw1Ip3WGVq+msw+A9bdvsS5F4fk+w==}
+  '@commitlint/prompt-cli@19.7.0':
+    resolution: {integrity: sha512-90HgFdMrjFXKa2QXgRjJ8SClD/oTvtEx9FXsIQDG/tjr6NbFagsj4nKjRGCGz7zl7wI1MskGKRj1kyxQvyry/A==}
     engines: {node: '>=v18'}
     hasBin: true
 
@@ -3999,7 +3999,7 @@ snapshots:
       conventional-changelog-angular: 7.0.0
       conventional-commits-parser: 5.0.0
 
-  '@commitlint/prompt-cli@19.6.1(@types/node@22.10.5)(typescript@5.7.2)':
+  '@commitlint/prompt-cli@19.7.0(@types/node@22.10.5)(typescript@5.7.2)':
     dependencies:
       '@commitlint/prompt': 19.7.0(@types/node@22.10.5)(typescript@5.7.2)
       inquirer: 9.3.7

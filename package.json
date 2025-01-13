@@ -63,7 +63,7 @@
     "@biomejs/biome": "1.9.4",
     "@commitlint/cli": "19.6.1",
     "@commitlint/config-conventional": "19.6.0",
-    "@commitlint/prompt-cli": "19.6.1",
+    "@commitlint/prompt-cli": "19.7.0",
     "@faker-js/faker": "9.3.0",
     "@inquirer/testing": "2.1.40",
     "@liudonghua123/pkg": "6.0.1",
