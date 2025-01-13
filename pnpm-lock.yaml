@@ -9,7 +9,7 @@ importers:
   .:
     dependencies:
       '@inquirer/prompts':
-        specifier: ^7.2.2
+        specifier: 7.2.2
         version: 7.2.2(@types/node@22.10.5)
       '@meza/curseforge-fingerprint':
         specifier: 1.1.42
@@ -64,7 +64,7 @@ importers:
         specifier: 9.3.0
         version: 9.3.0
       '@inquirer/testing':
-        specifier: ^2.1.40
+        specifier: 2.1.40
         version: 2.1.40(@types/node@22.10.5)
       '@liudonghua123/pkg':
         specifier: 6.0.1
