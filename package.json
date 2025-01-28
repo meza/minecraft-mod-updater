@@ -42,7 +42,7 @@
     "@inquirer/prompts": "^7.2.2",
     "@meza/curseforge-fingerprint": "1.1.42",
     "chalk": "5.4.1",
-    "commander": "12.1.0",
+    "commander": "13.1.0",
     "core-js": "3.40.0",
     "dotenv": "16.4.7",
     "glob": "11.0.0",
