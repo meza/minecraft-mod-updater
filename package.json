@@ -81,7 +81,7 @@
     "@types/glob": "8.1.0",
     "@types/is-ci": "3.0.4",
     "@types/node": "22.10.5",
-    "@vitest/coverage-v8": "2.1.8",
+    "@vitest/coverage-v8": "3.0.5",
     "conventional-changelog-conventionalcommits": "8.0.0",
     "cross-env": "7.0.3",
     "esbuild": "0.24.2",
