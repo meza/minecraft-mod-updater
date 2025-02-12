@@ -154,7 +154,7 @@ environment without interaction, you can supply all the answers through the comm
 #### Command line arguments for `init`
 
 You can supply all the answers via the command line arguments.
-You can add these one after the other, for example: `mmm init -l curseforge -p 1.16.5 -m ./mods -c ./modlist.json`
+You can add these one after the other, for example: `mmm init -l curseforge -g 1.16.5 -m ./mods -c ./modlist.json`
 
 | Short | Long                            | Description                             | Value                                                                                                                                     | Example                            |
 |-------|---------------------------------|-----------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------|
